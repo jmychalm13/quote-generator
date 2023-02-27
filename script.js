@@ -7,62 +7,64 @@ const loader = document.getElementById('loader');
 
 let apiQuotes = [];
 
-// Loading Spinner Shown
+// show loader
 function loading() {
   loader.hidden = false;
   quoteContainer.hidden = true;
 }
 
-// Remove Loading Spinner
+// hide loading
 function complete() {
   quoteContainer.hidden = false;
   loader.hidden = true;
 }
 
-// Show New Quote
+// show new quote
 function newQuote() {
   loading();
-  // Pick a random quote from array
+  // pick a random quote from array
   const quote = apiQuotes[Math.floor(Math.random() * apiQuotes.length)];
-  // Check if Author field is blank and replace it with 'Unknown'
+  // check if author field is blank and replace it with unknown
   if (!quote.author) {
-    authorText.textContent = 'Unknown';
+    authorText.textContent = 'Unknown'
   } else {
     authorText.textContent = quote.author;
   }
-  // Check Quote length to determine styling
-  if (quote.text.length > 120) {
+  // check quote length to determine styling
+  if (quoteText.length > 120) {
     quoteText.classList.add('long-quote');
   } else {
     quoteText.classList.remove('long-quote');
   }
-  // Set Quote, Hide Loader
+
+  // set quote, hide loader
+
   quoteText.textContent = quote.text;
   complete();
 }
 
-// Get Quotes From API
+// get quotes from API
 async function getQuotes() {
   loading();
-  const apiUrl = 'https://jacintodesign.github.io/quotes-api/data/quotes.json';
+  const apiURL = 'https://jacintodesign.github.io/quotes-api/data/quotes.json';
   try {
-    const response = await fetch(apiUrl);
+    const response = await fetch(apiURL);
     apiQuotes = await response.json();
     newQuote();
   } catch (error) {
-    // Catch Error Here
+    // catch error here
   }
 }
 
-// Tweet Quote
+// to tweet quote
 function tweetQuote() {
-  const twitterUrl = `https://twitter.com/intent/tweet?text=${quoteText.innerText} - ${authorText.innerText}`;
-  window.open(twitterUrl, '_blank');
+  const twitterURL = `https://twitter.com/intent/tweet?text=${quoteText.textContent} - ${authorText.textContent}`;
+  window.open(twitterURL, '_blank');
 }
 
-// Event Listeners
+// event listeners
 newQuoteBtn.addEventListener('click', newQuote);
 twitterBtn.addEventListener('click', tweetQuote);
 
-// On Load
+// on load
 getQuotes();
